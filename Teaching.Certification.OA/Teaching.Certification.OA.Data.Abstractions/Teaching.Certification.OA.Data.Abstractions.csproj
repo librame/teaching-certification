@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Teaching.Certification.OA.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Teaching.Certification.OA.Extensions\Teaching.Certification.OA.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>
