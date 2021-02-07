@@ -1,6 +1,6 @@
 using System;
 
-namespace Teaching.Certification.OA.AspNetMvc.Models
+namespace Teaching.Certification.OA.AspNetMvc
 {
     public class ErrorViewModel
     {

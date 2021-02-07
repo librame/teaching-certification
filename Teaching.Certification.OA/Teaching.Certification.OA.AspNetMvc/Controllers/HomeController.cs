@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Teaching.Certification.OA.AspNetMvc.Models;
 
 namespace Teaching.Certification.OA.AspNetMvc.Controllers
 {
