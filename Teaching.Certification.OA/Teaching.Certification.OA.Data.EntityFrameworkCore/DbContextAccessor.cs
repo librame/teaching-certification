@@ -7,6 +7,10 @@
 #endregion
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Teaching.Certification.OA.Data
 {
@@ -97,6 +101,50 @@ namespace Teaching.Certification.OA.Data
 
 
         /// <summary>
+        /// 重载保存更改。
+        /// </summary>
+        /// <param name="acceptAllChangesOnSuccess">指示是否在更改已成功发送到数据库之后调用。</param>
+        /// <returns>返回受影响的行数。</returns>
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            var aspects = this.GetService<IEnumerable<ISaveChangesAspect>>();
+            var hasAspects = aspects.IsNotEmpty();
+
+            if (hasAspects)
+                aspects.ForEach(a => a?.PreInject(this));
+
+            var result = base.SaveChanges(acceptAllChangesOnSuccess);
+
+            if (hasAspects)
+                aspects.ForEach(a => a?.PostInject(this));
+
+            return result;
+        }
+
+        /// <summary>
+        /// 重载保存更改。
+        /// </summary>
+        /// <param name="acceptAllChangesOnSuccess">指示是否在更改已成功发送到数据库之后调用。</param>
+        /// <param name="cancellationToken">给定的 <see cref="CancellationToken"/>（可选）。</param>
+        /// <returns>返回一个包含受影响行数的异步操作。</returns>
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            var aspects = this.GetService<IEnumerable<ISaveChangesAspect>>();
+            var hasAspects = aspects.IsNotEmpty();
+
+            if (hasAspects)
+                aspects.ForEach(a => a?.PreInject(this));
+
+            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+            if (hasAspects)
+                aspects.ForEach(a => a?.PostInject(this));
+
+            return result;
+        }
+
+
+        /// <summary>
         /// 配置模型构建器核心。
         /// </summary>
         /// <param name="modelBuilder">给定的 <see cref="ModelBuilder"/>。</param>
@@ -104,7 +152,7 @@ namespace Teaching.Certification.OA.Data
         {
             modelBuilder.Entity<User>(b =>
             {
-                b.HasIndex(i => new { i.UserName, i.DepartId })
+                b.HasIndex(i => new { i.UserName, i.DepartmentId })
                     .IsUnique();
 
                 b.HasKey(k => k.Id);
@@ -119,7 +167,7 @@ namespace Teaching.Certification.OA.Data
                 b.Property(p => p.StateId)
                     .IsRequired();
 
-                b.Property(p => p.DepartId)
+                b.Property(p => p.DepartmentId)
                     .IsRequired();
 
                 b.Property(p => p.Gender)
@@ -215,6 +263,7 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.MenuId)
+                    .HasMaxLength(50)
                     .IsRequired();
             });
 
@@ -226,10 +275,11 @@ namespace Teaching.Certification.OA.Data
                 b.HasKey(k => k.Id);
 
                 b.Property(p => p.Id)
-                    .ValueGeneratedOnAdd();
+                    .HasMaxLength(50)
+                    .ValueGeneratedNever();
 
                 b.Property(p => p.ParentId)
-                    .IsRequired();
+                    .HasMaxLength(50);
 
                 b.Property(p => p.Rank)
                     .IsRequired();
@@ -257,8 +307,7 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.ShortName)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Department>(b =>
@@ -271,12 +320,10 @@ namespace Teaching.Certification.OA.Data
                 b.Property(p => p.Id)
                     .ValueGeneratedOnAdd();
 
-                b.Property(p => p.BranchId)
-                    .IsRequired();
+                b.Property(p => p.BranchId);
 
                 b.Property(p => p.PrincipalId)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
 
                 b.Property(p => p.Name)
                     .HasMaxLength(50)
@@ -286,8 +333,7 @@ namespace Teaching.Certification.OA.Data
                     .HasMaxLength(100);
 
                 b.Property(p => p.Mobile)
-                    .HasMaxLength(100)
-                    .IsRequired();
+                    .HasMaxLength(100);
 
                 b.Property(p => p.Fax)
                     .HasMaxLength(100);
@@ -316,8 +362,7 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.OwnerId)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
 
                 b.Property(p => p.Name)
                     .HasMaxLength(50)
@@ -342,8 +387,7 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.Icon)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
 
                 b.Property(p => p.Extension)
                     .HasMaxLength(50);
@@ -411,12 +455,10 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.Address)
-                    .HasMaxLength(500)
-                    .IsRequired();
+                    .HasMaxLength(500);
 
                 b.Property(p => p.Descr)
-                    .HasMaxLength(500)
-                    .IsRequired();
+                    .HasMaxLength(500);
             });
 
             modelBuilder.Entity<Note>(b =>
@@ -441,8 +483,7 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.Descr)
-                    .HasMaxLength(500)
-                    .IsRequired();
+                    .HasMaxLength(4000);
             });
 
             modelBuilder.Entity<Log>(b =>
@@ -455,12 +496,10 @@ namespace Teaching.Certification.OA.Data
                     .ValueGeneratedOnAdd();
 
                 b.Property(p => p.UserId)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
 
                 b.Property(p => p.AssocId)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
 
                 b.Property(p => p.CreatedTime)
                     .IsRequired();
@@ -469,9 +508,7 @@ namespace Teaching.Certification.OA.Data
                     .HasMaxLength(50)
                     .IsRequired();
 
-                b.Property(p => p.Descr)
-                    .HasMaxLength(200)
-                    .IsRequired();
+                b.Property(p => p.Descr);
             });
         }
 

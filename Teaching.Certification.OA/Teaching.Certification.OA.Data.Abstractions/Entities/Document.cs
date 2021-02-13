@@ -10,7 +10,7 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Document : AbstractParentIdentifier<int>
+    public class Document : AbstractParentIdentifier<int>, ILoggable
     {
         public virtual int CategoryId { get; set; }
 
@@ -27,5 +27,18 @@ namespace Teaching.Certification.OA.Data
         public virtual DateTime CreatedTime { get; set; }
 
         public virtual DocumentStatus Status { get; set; }
+
+
+        public virtual LogDescriptor ToLog(string? userId = null)
+        {
+            return new LogDescriptor
+            {
+                UserId = userId,
+                AssocId = Id.ToString(),
+                Name = Name,
+                Descr = $"{nameof(CategoryId)}={CategoryId},{nameof(OwnerId)}={OwnerId},{nameof(Descr)}={Descr},{nameof(Path)}={Path},{nameof(Length)}={Length},{nameof(CreatedTime)}={CreatedTime},{nameof(Status)}={Status}"
+            };
+        }
+
     }
 }

@@ -13,12 +13,16 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
     {
         private readonly IStore<User> _userStore;
         private readonly IPasswordHashService _passwordHash;
+        private readonly IUserProfileService _userProfile;
 
 
-        public AccountController(IStore<User> userStore, IPasswordHashService passwordHash)
+        public AccountController(IStore<User> userStore,
+            IPasswordHashService passwordHash,
+            IUserProfileService userProfile)
         {
             _userStore = userStore;
             _passwordHash = passwordHash;
+            _userProfile = userProfile;
         }
 
 
@@ -45,11 +49,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
                     return View(model);
                 }
 
-                var identity = new ClaimsIdentity();
-
-                identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id));
-                identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-
+                var identity = _userProfile.PopulateIdentity(user);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(identity));
             }
@@ -91,6 +91,12 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
             }
 
             return View(model);
+        }
+
+
+        public IActionResult ChangePassword()
+        {
+            return View();
         }
 
 

@@ -10,7 +10,7 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Attachment : AbstractIdentifier<int>
+    public class Attachment : AbstractIdentifier<int>, ILoggable
     {
         public virtual int DocumentId { get; set; }
 
@@ -23,5 +23,18 @@ namespace Teaching.Certification.OA.Data
         public virtual long Length { get; set; }
 
         public virtual DateTime CreatedTime { get; set; }
+
+
+        public virtual LogDescriptor ToLog(string? userId = null)
+        {
+            return new LogDescriptor
+            {
+                UserId = userId,
+                AssocId = Id.ToString(),
+                Name = Name,
+                Descr = $"{nameof(DocumentId)}={DocumentId},{nameof(DocumentCategoryId)}={DocumentCategoryId},{nameof(Path)}={Path},{nameof(Length)}={Length},{nameof(CreatedTime)}={CreatedTime}"
+            };
+        }
+
     }
 }

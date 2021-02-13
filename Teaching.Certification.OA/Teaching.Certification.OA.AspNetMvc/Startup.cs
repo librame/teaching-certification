@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace Teaching.Certification.OA.AspNetMvc
@@ -30,6 +31,7 @@ namespace Teaching.Certification.OA.AspNetMvc
             });
 
             services.AddOAData();
+            services.AddSingleton<IUserProfileService, UserProfileService>();
 
             services.AddControllersWithViews();
 
@@ -38,6 +40,8 @@ namespace Teaching.Certification.OA.AspNetMvc
                 {
                     options.LoginPath = new PathString("/Account/Login");
                 });
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
 

@@ -10,7 +10,7 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Note : AbstractIdentifier<int>
+    public class Note : AbstractIdentifier<int>, ILoggable
     {
         public virtual string? CreatorId { get; set; }
 
@@ -19,5 +19,18 @@ namespace Teaching.Certification.OA.Data
         public virtual string? Descr { get; set; }
 
         public virtual DateTime CreatedTime { get; set; }
+
+
+        public virtual LogDescriptor ToLog(string? userId = null)
+        {
+            return new LogDescriptor
+            {
+                UserId = userId,
+                AssocId = Id.ToString(),
+                Name = Title,
+                Descr = $"{nameof(CreatorId)}={CreatorId},{nameof(Descr)}={Descr},{nameof(CreatedTime)}={CreatedTime}"
+            };
+        }
+
     }
 }

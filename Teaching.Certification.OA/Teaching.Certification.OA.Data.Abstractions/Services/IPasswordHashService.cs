@@ -9,7 +9,7 @@
 namespace Teaching.Certification.OA.Data
 {
     /// <summary>
-    /// 密码服务接口。
+    /// 密码哈希服务接口。
     /// </summary>
     public interface IPasswordHashService
     {
