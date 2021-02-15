@@ -23,8 +23,8 @@
             <div class="sidebar-heading">
                 <ul>
                     <li>欢迎：@UserProfile.GetCurrentUserName()</li>
-                    <li>角色：@RoleStore.GetRoleName(UserProfile.GetCurrentUserRoleId())</li>
-                    <li>部门：@DepartmentStore.GetDepartmentName(UserProfile.GetCurrentUserDepartmentId())</li>
+                    <li>角色：@RoleStore.GetRoleName(UserProfile.GetCurrentUserRole())</li>
+                    <li>部门：@DepartmentStore.GetDepartmentName(UserProfile.GetCurrentUserDepartment())</li>
                 </ul>
             </div>
             <div class="list-group list-group-flush">

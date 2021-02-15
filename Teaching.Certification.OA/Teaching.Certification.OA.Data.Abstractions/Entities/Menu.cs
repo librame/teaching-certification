@@ -22,7 +22,7 @@ namespace Teaching.Certification.OA.Data
             return new LogDescriptor
             {
                 UserId = userId,
-                AssocId = Id.ToString(),
+                AssocId = Id?.ToString(),
                 Name = Name,
                 Descr = $"{nameof(Url)}={Url},{nameof(Rank)}={Rank}"
             };

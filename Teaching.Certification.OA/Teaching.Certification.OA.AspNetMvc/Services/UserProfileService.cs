@@ -23,16 +23,16 @@ namespace Teaching.Certification.OA.AspNetMvc
             return identity?.FindFirst(ClaimTypes.Sid)?.Value;
         }
 
-        public string GetCurrentUserRoleId()
+        public string GetCurrentUserRole()
         {
             var identity = _accessor.HttpContext.User.Identities.FirstOrDefault(p => p.IsAuthenticated);
             return identity?.FindFirst(ClaimTypes.Role)?.Value;
         }
 
-        public string GetCurrentUserDepartmentId()
+        public string GetCurrentUserDepartment()
         {
             var identity = _accessor.HttpContext.User.Identities.FirstOrDefault(p => p.IsAuthenticated);
-            return identity?.FindFirst(ClaimTypes.UserData)?.Value;
+            return identity?.FindFirst(ClaimTypes.GroupSid)?.Value;
         }
 
         public string GetCurrentUserGender()
@@ -47,17 +47,17 @@ namespace Teaching.Certification.OA.AspNetMvc
             return identity?.FindFirst(ClaimTypes.Name)?.Value;
         }
 
-        public ClaimsIdentity PopulateIdentity(User user)
+        public ClaimsIdentity PopulateIdentity(User user, Role role, Department department)
         {
             user.NotNull(nameof(user));
 
             var identity = new ClaimsIdentity();
 
             identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id));
-            identity.AddClaim(new Claim(ClaimTypes.Role, user.RoleId.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.UserData, user.DepartmentId.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.Role, role?.Name ?? user.RoleId.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.GroupSid, department?.Name ?? user.DepartmentId.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Gender, user.Gender.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
 
             return identity;
         }

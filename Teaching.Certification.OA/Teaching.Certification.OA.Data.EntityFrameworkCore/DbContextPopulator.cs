@@ -20,6 +20,17 @@ namespace Teaching.Certification.OA.Data
     public static class DbContextPopulator
     {
         /// <summary>
+        /// 管理员角色。
+        /// </summary>
+        public const string RoleAdministrator = "Administrator";
+
+        /// <summary>
+        /// 注册员角色。
+        /// </summary>
+        public const string RoleRegister = "Register";
+
+
+        /// <summary>
         /// 开始填充。
         /// </summary>
         /// <param name="cancellationToken">给定的 <see cref="CancellationToken"/>（可选）。</param>
@@ -76,7 +87,7 @@ namespace Teaching.Certification.OA.Data
                 Id = "105",
                 ParentId = "1",
                 Name = "系统管理",
-                Url = "/Global",
+                Url = "/Global/Logs", // go to Logs
                 Rank = 1.0F
             });
 #pragma warning restore CS8602 // 解引用可能出现空引用。
@@ -153,7 +164,7 @@ namespace Teaching.Certification.OA.Data
                 Id = "102",
                 ParentId = "1",
                 Name = "日程管理",
-                Url = "/Schedule",
+                Url = "/Schedule/My", // go to My
                 Rank = 2.0F
             });
             accessor.Menus.Add(new Menu
@@ -187,7 +198,7 @@ namespace Teaching.Certification.OA.Data
                 Id = "101",
                 ParentId = "1",
                 Name = "人事管理",
-                Url = "/Personnel",
+                Url = "/Personnel/Users", // go to Users
                 Rank = 1.0F
             });
             accessor.Menus.Add(new Menu
@@ -222,15 +233,15 @@ namespace Teaching.Certification.OA.Data
 #pragma warning disable CS8602 // 解引用可能出现空引用。
             accessor.Roles.Add(new Role
             {
-                Name = "Administrator",
+                Name = RoleAdministrator,
                 Descr = "管理员"
             });
 #pragma warning restore CS8602 // 解引用可能出现空引用。
 
             accessor.Roles.Add(new Role
             {
-                Name = "Register",
-                Descr = "注册人员"
+                Name = RoleRegister,
+                Descr = "注册员"
             });
 
             // Right
@@ -310,7 +321,7 @@ namespace Teaching.Certification.OA.Data
             accessor.Users.Add(new User
             {
                 RoleId = 1,
-                UserName = "默认管理用户",
+                Name = "默认管理用户",
                 PasswordHash = defaultPasswordHash
             });
 #pragma warning restore CS8602 // 解引用可能出现空引用。
@@ -318,7 +329,7 @@ namespace Teaching.Certification.OA.Data
             {
                 RoleId = 2,
                 DepartmentId = 1,
-                UserName = "默认注册用户",
+                Name = "默认注册用户",
                 PasswordHash = defaultPasswordHash
             });
         }

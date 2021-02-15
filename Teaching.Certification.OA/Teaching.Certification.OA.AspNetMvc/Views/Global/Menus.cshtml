@@ -1,0 +1,38 @@
+﻿@model IPageable<Menu>
+@{
+    ViewData["Title"] = "菜单管理";
+    var menuStore = ViewBag.MenuStore as IStore<Menu>;
+}
+<!-- Menus -->
+<div class="row">
+    <div class="col-sm-6">
+
+        <table class="table">
+            <caption>菜单列表</caption>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>父编号</th>
+                    <th>名称</th>
+                    <th>链接</th>
+                    <th>排序</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                <tr>
+                    <td>@m.Id</td>
+                    <td>@menuStore.GetParent(m.ParentId, m => m.Name)</td>
+                    <td>@m.Name</td>
+                    <td>@m.Url</td>
+                    <td>排序</td>
+                    <td>修改</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

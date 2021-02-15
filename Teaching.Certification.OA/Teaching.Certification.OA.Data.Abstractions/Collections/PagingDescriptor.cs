@@ -59,16 +59,19 @@ namespace Teaching.Certification.OA.Data
         /// <summary>
         /// 通过索引计算。
         /// </summary>
-        /// <param name="index">给定的页索引。</param>
-        /// <param name="size">给定的页大小。</param>
+        /// <param name="index">给定的页索引（可选）。</param>
+        /// <param name="size">给定的页大小（可选）。</param>
         /// <returns>返回 <see cref="PagingDescriptor"/>。</returns>
-        public PagingDescriptor ComputeByIndex(int index, int size)
+        public PagingDescriptor ComputeByIndex(int? index, int? size)
         {
+            if (!index.HasValue) index = 0;
+            if (!size.HasValue) size = 10;
+
             if (index < 1) index = 1;
             if (size < 1) size = 1;
 
-            Size = size;
-            Index = index;
+            Size = size.Value;
+            Index = index.Value;
 
             // 计算跳过的条数
             if (Index > 1)
@@ -95,21 +98,24 @@ namespace Teaching.Certification.OA.Data
         /// <summary>
         /// 通过跳数计算。
         /// </summary>
-        /// <param name="skip">给定的跳过条数。</param>
-        /// <param name="take">给定的获取条数。</param>
+        /// <param name="skip">给定的跳过条数（可选）。</param>
+        /// <param name="take">给定的获取条数（可选）。</param>
         /// <returns>返回 <see cref="PagingDescriptor"/>。</returns>
-        public PagingDescriptor ComputeBySkip(int skip, int take)
+        public PagingDescriptor ComputeBySkip(int? skip, int? take)
         {
+            if (!skip.HasValue) skip = 0;
+            if (!take.HasValue) take = 10;
+
             if (take < 1) take = 1;
 
-            Index = ((int)Math.Round((double)skip / take)) + 1;
-            Skip = skip;
-            Size = take;
+            Index = ((int)Math.Round((double)skip.Value / take.Value)) + 1;
+            Skip = skip.Value;
+            Size = take.Value;
 
             if (Total > 0)
             {
                 // 计算总页数
-                Pages = Total / take + (Total % take > 0 ? 1 : 0);
+                Pages = Total / take.Value + (Total % take.Value > 0 ? 1 : 0);
             }
 
             IsComputedBySkip = true;

@@ -1,0 +1,41 @@
+﻿@model IPageable<Document>
+@{
+    ViewData["Title"] = "文档管理";
+    var categoryStore = ViewBag.CategoryStore as IStore<DocumentCategory>;
+    var userStore = ViewBag.UserStore as IStore<User>;
+}
+<!-- Documents -->
+<div class="row">
+    <div class="col-sm-6">
+
+        <table class="table">
+            <caption>文档列表</caption>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>大小</th>
+                    <th>分类</th>
+                    <th>用户</th>
+                    <th>时间</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                <tr>
+                    <td>@m.Id</td>
+                    <td>@m.Name</td>
+                    <td>@m.Length</td>
+                    <td>@(categoryStore.GetById(m.CategoryId)?.Name ?? m.CategoryId.ToString())</td>
+                    <td>@(userStore.GetById(m.OwnerId)?.Name ?? m.OwnerId)</td>
+                    <td>@m.CreatedTime</td>
+                    <td>修改</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

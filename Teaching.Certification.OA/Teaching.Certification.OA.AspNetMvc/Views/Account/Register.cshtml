@@ -1,8 +1,8 @@
-﻿@model LoginViewModel
+﻿@model RegisterViewModel
 @{
-    ViewData["Title"] = "用户登录";
+    ViewData["Title"] = "用户注册";
 }
-<!-- Login -->
+<!-- Register -->
 <div class="row">
     <div class="col-sm-6">
 
@@ -11,7 +11,7 @@
         </div>
 
         <div class="form-bottom">
-            <form id="account" method="post" class="login-form" asp-controller="Account" asp-action="Login">
+            <form id="account" method="post" class="login-form" asp-controller="Account" asp-action="Register">
 
                 <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -28,22 +28,24 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            记住我？
-                        </label>
-                    </div>
+                    <label asp-for="RePassword" class="sr-only"></label>
+                    <input asp-for="RePassword" class="form-password form-control" placeholder="确认密码" />
+                    <span asp-validation-for="RePassword" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn">立即登录</button>
+                    <label asp-for="IsMale" class="sr-only"></label>
+                    <input name="IsMale" value="True" />男
+                    <input name="IsMale" value="False" />女
+                    <span asp-validation-for="IsMale" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">立即注册</button>
                 </div>
 
                 <div class="form-group overflow-hidden">
-                    <a action="Register">用户注册</a>
-                    |
-                    <a action="ForgotPassword">忘记密码</a>
+                    <a action="Login">已有帐户</a>
                 </div>
             </form>
         </div>

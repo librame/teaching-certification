@@ -20,6 +20,11 @@ namespace Teaching.Certification.OA.Data
         where T : class
     {
         /// <summary>
+        /// 访问器接口。
+        /// </summary>
+        IAccessor Accessor { get; }
+
+        /// <summary>
         /// 可查询接口。
         /// </summary>
         IQueryable<T> Queryable { get; }

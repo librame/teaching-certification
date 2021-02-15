@@ -1,0 +1,36 @@
+﻿@model IPageable<UserLogin>
+@{
+    ViewData["Title"] = "登录日志";
+    var userStore = ViewBag.UserStore as IStore<User>;
+}
+<!-- User Logins -->
+<div class="row">
+    <div class="col-sm-6">
+
+        <table class="table">
+            <caption>日志列表</caption>
+            <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>IP 地址</th>
+                    <th>描述</th>
+                    <th>用户</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                <tr>
+                    <td>@m.CreatedTime</td>
+                    <td>@m.UserIp</td>
+                    <td>@m.Descr</td>
+                    <td>@(userStore.GetById(m.UserId)?.Name ?? m.UserId)</td>
+                    <td>@m.Status</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

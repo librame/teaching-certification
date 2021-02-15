@@ -37,6 +37,12 @@ namespace Teaching.Certification.OA.Data
 
 
         /// <summary>
+        /// 访问器接口。
+        /// </summary>
+        public IAccessor Accessor
+            => _accessor;
+
+        /// <summary>
         /// 可查询实体。
         /// </summary>
         public IQueryable<TEntity> Queryable

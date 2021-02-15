@@ -71,7 +71,7 @@ namespace Teaching.Certification.OA.Data
         /// <param name="index">给定的页索引。</param>
         /// <param name="size">给定的页大小。</param>
         /// <returns>返回 <see cref="IPageable{T}"/>。</returns>
-        public static IPageable<T> AsPagingByIndex<T>(this ICollection<T>? rows, int index, int size)
+        public static IPageable<T> AsPagingByIndex<T>(this ICollection<T>? rows, int? index, int? size)
             where T : class
             => rows.AsPaging(paging => paging.ComputeByIndex(index, size));
 
@@ -83,7 +83,7 @@ namespace Teaching.Certification.OA.Data
         /// <param name="skip">给定的跳过条数。</param>
         /// <param name="take">给定的获取条数。</param>
         /// <returns>返回 <see cref="IPageable{T}"/>。</returns>
-        public static IPageable<T> AsPagingBySkip<T>(this ICollection<T>? rows, int skip, int take)
+        public static IPageable<T> AsPagingBySkip<T>(this ICollection<T>? rows, int? skip, int? take)
             where T : class
             => rows.AsPaging(paging => paging.ComputeBySkip(skip, take));
 
@@ -112,10 +112,23 @@ namespace Teaching.Certification.OA.Data
         /// <param name="index">给定的页索引。</param>
         /// <param name="size">给定的页大小。</param>
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsPagingByIndex<TEntity>(this IQueryable<TEntity> query,
-            int index, int size)
+        public static IPageable<TEntity> AsPagingByIndexOfRank<TEntity>(this IQueryable<TEntity> query,
+            int? index, int? size)
             where TEntity : class, IRanking<float>
-            => query.AsPagingByIndex<TEntity, float>(index, size);
+            => query.AsPagingByIndexOfRank<TEntity, float>(index, size);
+
+        /// <summary>
+        /// 转换为可降序分页集合（注：默认按排序字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="index">给定的页索引。</param>
+        /// <param name="size">给定的页大小。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsDescendingPagingByIndexOfRank<TEntity>(this IQueryable<TEntity> query,
+            int? index, int? size)
+            where TEntity : class, IRanking<float>
+            => query.AsDescendingPagingByIndexOfRank<TEntity, float>(index, size);
 
         /// <summary>
         /// 转换为可升序分页集合（注：默认按排序字段进行排序）。
@@ -126,25 +139,11 @@ namespace Teaching.Certification.OA.Data
         /// <param name="index">给定的页索引。</param>
         /// <param name="size">给定的页大小。</param>
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsPagingByIndex<TEntity, TRank>(this IQueryable<TEntity> query,
-            int index, int size)
+        public static IPageable<TEntity> AsPagingByIndexOfRank<TEntity, TRank>(this IQueryable<TEntity> query,
+            int? index, int? size)
             where TEntity : class, IRanking<TRank>
             where TRank : struct
             => query.AsPagingByIndex(q => q.OrderBy(k => k.Rank), index, size);
-
-
-        /// <summary>
-        /// 转换为可降序分页集合（注：默认按排序字段进行排序）。
-        /// </summary>
-        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
-        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
-        /// <param name="index">给定的页索引。</param>
-        /// <param name="size">给定的页大小。</param>
-        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsDescendingPagingByIndex<TEntity>(this IQueryable<TEntity> query,
-            int index, int size)
-            where TEntity : class, IRanking<float>
-            => query.AsDescendingPagingByIndex<TEntity, float>(index, size);
 
         /// <summary>
         /// 转换为可降序分页集合（注：默认按排序字段进行排序）。
@@ -155,11 +154,68 @@ namespace Teaching.Certification.OA.Data
         /// <param name="index">给定的页索引。</param>
         /// <param name="size">给定的页大小。</param>
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsDescendingPagingByIndex<TEntity, TRank>(this IQueryable<TEntity> query,
-            int index, int size)
+        public static IPageable<TEntity> AsDescendingPagingByIndexOfRank<TEntity, TRank>(this IQueryable<TEntity> query,
+            int? index, int? size)
             where TEntity : class, IRanking<TRank>
             where TRank : struct
             => query.AsPagingByIndex(q => q.OrderByDescending(k => k.Rank), index, size);
+
+
+        /// <summary>
+        /// 转换为可升序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="index">给定的页索引。</param>
+        /// <param name="size">给定的页大小。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsPagingByIndexOfId<TEntity>(this IQueryable<TEntity> query,
+            int? index, int? size)
+            where TEntity : class, IIdentifier<int>
+            => query.AsPagingByIndexOfId<TEntity, int>(index, size);
+
+        /// <summary>
+        /// 转换为可降序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="index">给定的页索引。</param>
+        /// <param name="size">给定的页大小。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsDescendingPagingByIndexOfId<TEntity>(this IQueryable<TEntity> query,
+            int? index, int? size)
+            where TEntity : class, IIdentifier<int>
+            => query.AsDescendingPagingByIndexOfId<TEntity, int>(index, size);
+
+        /// <summary>
+        /// 转换为可升序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <typeparam name="TId">指定的标识类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="index">给定的页索引。</param>
+        /// <param name="size">给定的页大小。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsPagingByIndexOfId<TEntity, TId>(this IQueryable<TEntity> query,
+            int? index, int? size)
+            where TEntity : class, IIdentifier<TId>
+            where TId : IEquatable<TId>
+            => query.AsPagingByIndex(q => q.OrderBy(k => k.Id), index, size);
+
+        /// <summary>
+        /// 转换为可降序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <typeparam name="TId">指定的标识类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="index">给定的页索引。</param>
+        /// <param name="size">给定的页大小。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsDescendingPagingByIndexOfId<TEntity, TId>(this IQueryable<TEntity> query,
+            int? index, int? size)
+            where TEntity : class, IIdentifier<TId>
+            where TId : IEquatable<TId>
+            => query.AsPagingByIndex(q => q.OrderByDescending(k => k.Id), index, size);
 
 
         /// <summary>
@@ -173,7 +229,7 @@ namespace Teaching.Certification.OA.Data
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
         public static IPageable<TEntity> AsPagingByIndex<TEntity>(this IQueryable<TEntity> query,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderedFactory,
-            int index, int size)
+            int? index, int? size)
             where TEntity : class
         {
             if (orderedFactory.IsNotNull())
@@ -195,10 +251,23 @@ namespace Teaching.Certification.OA.Data
         /// <param name="skip">给定的跳过条数。</param>
         /// <param name="take">给定的获取条数。</param>
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsPagingBySkip<TEntity>(this IQueryable<TEntity> queryable,
-            int skip, int take)
+        public static IPageable<TEntity> AsPagingBySkipOfRank<TEntity>(this IQueryable<TEntity> queryable,
+            int? skip, int? take)
             where TEntity : class, IRanking<float>
-            => queryable.AsPagingBySkip<TEntity, float>(skip, take);
+            => queryable.AsPagingBySkipOfRank<TEntity, float>(skip, take);
+
+        /// <summary>
+        /// 转换为可降序分页集合（注：默认按排序字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="queryable">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="skip">给定的跳过条数。</param>
+        /// <param name="take">给定的获取条数。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsDescendingPagingBySkipOfRank<TEntity>(this IQueryable<TEntity> queryable,
+            int? skip, int? take)
+            where TEntity : class, IRanking<float>
+            => queryable.AsDescendingPagingBySkipOfRank<TEntity, float>(skip, take);
 
         /// <summary>
         /// 转换为可升序分页集合（注：默认按排序字段进行排序）。
@@ -209,25 +278,11 @@ namespace Teaching.Certification.OA.Data
         /// <param name="skip">给定的跳过条数。</param>
         /// <param name="take">给定的获取条数。</param>
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsPagingBySkip<TEntity, TRank>(this IQueryable<TEntity> queryable,
-            int skip, int take)
+        public static IPageable<TEntity> AsPagingBySkipOfRank<TEntity, TRank>(this IQueryable<TEntity> queryable,
+            int? skip, int? take)
             where TEntity : class, IRanking<TRank>
             where TRank : struct
             => queryable.AsPagingBySkip(q => q.OrderBy(k => k.Rank), skip, take);
-
-
-        /// <summary>
-        /// 转换为可降序分页集合（注：默认按排序字段进行排序）。
-        /// </summary>
-        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
-        /// <param name="queryable">给定的 <see cref="IQueryable{TEntity}"/>。</param>
-        /// <param name="skip">给定的跳过条数。</param>
-        /// <param name="take">给定的获取条数。</param>
-        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsDescendingPagingBySkip<TEntity>(this IQueryable<TEntity> queryable,
-            int skip, int take)
-            where TEntity : class, IRanking<float>
-            => queryable.AsDescendingPagingBySkip<TEntity, float>(skip, take);
 
         /// <summary>
         /// 转换为可降序分页集合（注：默认按排序字段进行排序）。
@@ -238,15 +293,72 @@ namespace Teaching.Certification.OA.Data
         /// <param name="skip">给定的跳过条数。</param>
         /// <param name="take">给定的获取条数。</param>
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
-        public static IPageable<TEntity> AsDescendingPagingBySkip<TEntity, TRank>(this IQueryable<TEntity> queryable,
-            int skip, int take)
+        public static IPageable<TEntity> AsDescendingPagingBySkipOfRank<TEntity, TRank>(this IQueryable<TEntity> queryable,
+            int? skip, int? take)
             where TEntity : class, IRanking<TRank>
             where TRank : struct
             => queryable.AsPagingBySkip(q => q.OrderByDescending(k => k.Rank), skip, take);
 
 
         /// <summary>
-        /// 转换为可分页集合（注：需要对查询接口进行排序操作，否则 LINQ 会抛出未排序异常）。
+        /// 转换为可升序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="skip">给定的跳过条数。</param>
+        /// <param name="take">给定的获取条数。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsPagingBySkipOfId<TEntity>(this IQueryable<TEntity> query,
+            int? skip, int? take)
+            where TEntity : class, IIdentifier<int>
+            => query.AsPagingBySkipOfId<TEntity, int>(skip, take);
+
+        /// <summary>
+        /// 转换为可降序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="query">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="skip">给定的跳过条数。</param>
+        /// <param name="take">给定的获取条数。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsDescendingPagingBySkipOfId<TEntity>(this IQueryable<TEntity> query,
+            int? skip, int? take)
+            where TEntity : class, IIdentifier<int>
+            => query.AsDescendingPagingBySkipOfId<TEntity, int>(skip, take);
+
+        /// <summary>
+        /// 转换为可升序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <typeparam name="TId">指定的标识类型。</typeparam>
+        /// <param name="queryable">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="skip">给定的跳过条数。</param>
+        /// <param name="take">给定的获取条数。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsPagingBySkipOfId<TEntity, TId>(this IQueryable<TEntity> queryable,
+            int? skip, int? take)
+            where TEntity : class, IIdentifier<TId>
+            where TId : IEquatable<TId>
+            => queryable.AsPagingBySkip(q => q.OrderBy(k => k.Id), skip, take);
+
+        /// <summary>
+        /// 转换为可降序分页集合（注：默认按标识字段进行排序）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <typeparam name="TId">指定的标识类型。</typeparam>
+        /// <param name="queryable">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="skip">给定的跳过条数。</param>
+        /// <param name="take">给定的获取条数。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsDescendingPagingBySkipOfId<TEntity, TId>(this IQueryable<TEntity> queryable,
+            int? skip, int? take)
+            where TEntity : class, IIdentifier<TId>
+            where TId : IEquatable<TId>
+            => queryable.AsPagingBySkip(q => q.OrderByDescending(k => k.Id), skip, take);
+
+
+        /// <summary>
+        /// 转换为可分页集合（注：需要对查询接口进行排序操作，否则执行 LINQ 会抛出未排序异常）。
         /// </summary>
         /// <typeparam name="TEntity">指定的实体类型。</typeparam>
         /// <param name="queryable">给定的 <see cref="IQueryable{TEntity}"/>。</param>
@@ -256,7 +368,7 @@ namespace Teaching.Certification.OA.Data
         /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
         public static IPageable<TEntity> AsPagingBySkip<TEntity>(this IQueryable<TEntity> queryable,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderedFactory,
-            int skip, int take)
+            int? skip, int? take)
             where TEntity : class
         {
             if (orderedFactory.IsNotNull())
@@ -268,7 +380,14 @@ namespace Teaching.Certification.OA.Data
         #endregion
 
 
-        private static IPageable<TEntity> AsPaging<TEntity>(this IQueryable<TEntity> queryable,
+        /// <summary>
+        /// 转换为可分页集合（注：需要对查询接口进行排序操作，否则执行 LINQ 会抛出未排序异常）。
+        /// </summary>
+        /// <typeparam name="TEntity">指定的实体类型。</typeparam>
+        /// <param name="queryable">给定的 <see cref="IQueryable{TEntity}"/>。</param>
+        /// <param name="computeAction">计算分页的动作。</param>
+        /// <returns>返回 <see cref="IPageable{TEntity}"/>。</returns>
+        public static IPageable<TEntity> AsPaging<TEntity>(this IQueryable<TEntity> queryable,
             Action<PagingDescriptor> computeAction)
             where TEntity : class
         {

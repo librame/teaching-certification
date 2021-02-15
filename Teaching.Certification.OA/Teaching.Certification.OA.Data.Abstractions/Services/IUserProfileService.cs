@@ -22,16 +22,16 @@ namespace Teaching.Certification.OA.Data
         string? GetCurrentUserId();
 
         /// <summary>
-        /// 获取当前用户角色标识。
+        /// 获取当前用户角色。
         /// </summary>
         /// <returns>返回字符串。</returns>
-        string? GetCurrentUserRoleId();
+        string? GetCurrentUserRole();
 
         /// <summary>
-        /// 获取当前用户部门标识。
+        /// 获取当前用户部门。
         /// </summary>
         /// <returns>返回字符串。</returns>
-        string? GetCurrentUserDepartmentId();
+        string? GetCurrentUserDepartment();
 
         /// <summary>
         /// 获取当前用户性别。
@@ -49,7 +49,9 @@ namespace Teaching.Certification.OA.Data
         /// 填充声明身份。
         /// </summary>
         /// <param name="user">给定的 <see cref="User"/>。</param>
+        /// <param name="role">给定的 <see cref="Role"/>。</param>
+        /// <param name="department">给定的 <see cref="Department"/>。</param>
         /// <returns>返回 <see cref="ClaimsIdentity"/>。</returns>
-        ClaimsIdentity PopulateIdentity(User user);
+        ClaimsIdentity PopulateIdentity(User user, Role role, Department department);
     }
 }

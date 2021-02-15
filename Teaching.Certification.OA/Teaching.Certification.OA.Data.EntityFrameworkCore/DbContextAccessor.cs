@@ -152,7 +152,7 @@ namespace Teaching.Certification.OA.Data
         {
             modelBuilder.Entity<User>(b =>
             {
-                b.HasIndex(i => new { i.UserName, i.DepartmentId })
+                b.HasIndex(i => new { i.Name, i.DepartmentId })
                     .IsUnique();
 
                 b.HasKey(k => k.Id);
@@ -173,7 +173,7 @@ namespace Teaching.Certification.OA.Data
                 b.Property(p => p.Gender)
                     .IsRequired();
 
-                b.Property(p => p.UserName)
+                b.Property(p => p.Name)
                     .HasMaxLength(50)
                     .IsRequired();
 

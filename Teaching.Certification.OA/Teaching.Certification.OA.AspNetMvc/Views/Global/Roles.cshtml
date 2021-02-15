@@ -1,0 +1,33 @@
+﻿@model IPageable<Role>
+@{
+    ViewData["Title"] = "角色管理";
+}
+<!-- Roles -->
+<div class="row">
+    <div class="col-sm-6">
+
+        <table class="table">
+            <caption>菜单列表</caption>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>描述</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                <tr>
+                    <td>@m.Id</td>
+                    <td>@m.Name</td>
+                    <td>@m.Descr</td>
+                    <td>修改</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

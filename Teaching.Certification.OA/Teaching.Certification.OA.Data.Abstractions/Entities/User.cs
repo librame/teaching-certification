@@ -20,7 +20,7 @@ namespace Teaching.Certification.OA.Data
         public virtual UserGender Gender { get; set; }
             = UserGender.Male;
 
-        public virtual string? UserName { get; set; }
+        public virtual string? Name { get; set; }
 
         public virtual string? PasswordHash { get; set; }
 
@@ -31,7 +31,7 @@ namespace Teaching.Certification.OA.Data
             {
                 UserId = userId,
                 AssocId = Id,
-                Name = UserName,
+                Name = Name,
                 Descr = $"{nameof(RoleId)}={RoleId},{nameof(StateId)}={StateId},{nameof(DepartmentId)}={DepartmentId},{nameof(Gender)}={Gender},{nameof(PasswordHash)}={PasswordHash}"
             };
         }
