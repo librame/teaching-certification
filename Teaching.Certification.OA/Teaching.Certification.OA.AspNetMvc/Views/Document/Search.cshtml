@@ -39,8 +39,8 @@
                     <td>@m.Id</td>
                     <td>@m.Name</td>
                     <td>@m.Length</td>
-                    <td>@(categoryStore.GetById(m.CategoryId)?.Name ?? m.CategoryId.ToString())</td>
-                    <td>@(userStore.GetById(m.OwnerId)?.Name ?? m.OwnerId)</td>
+                    <td>@categoryStore.GetNameByIdIfNotDefault(m.CategoryId)</td>
+                    <td>@userStore.GetNameByIdIfNotEmpty(m.OwnerId)</td>
                     <td>@m.CreatedTime</td>
                     <td>@m.Status</td>
                     <td>修改</td>

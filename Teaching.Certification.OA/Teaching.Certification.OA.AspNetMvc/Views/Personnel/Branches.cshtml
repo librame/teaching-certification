@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IPageable<Branch>
 @{
+    ViewData["Title"] = "机构管理";
 }
+<!-- Branches -->
+<div class="row">
+    <div class="col-sm-6">
+
+        <form method="post" class="login-form" asp-controller="Personnel" asp-action="Branches">
+
+            <div class="form-group">
+                <input name="id" type="hidden" value="" />
+                <input name="name" class="form-username form-control" placeholder="名称" />
+                <input name="abbrname" class="form-username form-control" placeholder="简称" />
+                <button type="submit" class="btn">保存</button>
+            </div>
+
+        </form>
+
+        <table class="table">
+            <caption>机构列表</caption>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>简称</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        <td>@m.Id</td>
+                        <td>@m.Name</td>
+                        <td>@m.AbbrName</td>
+                        <td>修改</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

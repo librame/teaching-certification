@@ -10,7 +10,7 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Note : AbstractIdentifier<int>, ILoggable
+    public class Note : AbstractIdentifier<int>, ITitling, ILoggable
     {
         public virtual string? CreatorId { get; set; }
 

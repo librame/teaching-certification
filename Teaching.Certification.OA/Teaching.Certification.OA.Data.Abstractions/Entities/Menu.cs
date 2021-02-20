@@ -8,7 +8,7 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Menu : AbstractParentIdentifier<string>, IRanking<float>, ILoggable
+    public class Menu : AbstractParentIdentifier<string>, IRanking<float>, INaming, ILoggable
     {
         public virtual string? Name { get; set; }
 

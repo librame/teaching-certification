@@ -59,7 +59,8 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
                 var role = _roleStore.GetById(user.RoleId);
                 var department = _departmentStore.GetById(user.DepartmentId);
 
-                var identity = _userProfile.PopulateIdentity(user, role, department);
+                var identity = _userProfile.PopulateIdentity(user, role, department,
+                    CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(identity));

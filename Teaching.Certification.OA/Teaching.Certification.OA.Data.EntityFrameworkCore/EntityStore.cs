@@ -43,10 +43,16 @@ namespace Teaching.Certification.OA.Data
             => _accessor;
 
         /// <summary>
-        /// 可查询实体。
+        /// 可查询接口。
         /// </summary>
         public IQueryable<TEntity> Queryable
             => Table;
+
+        /// <summary>
+        /// 通过禁用跟踪执行可查询接口。
+        /// </summary>
+        public IQueryable<TEntity> QueryableByNoTracking
+            => Table.AsNoTracking();
 
         /// <summary>
         /// 实体表集合。
@@ -73,8 +79,8 @@ namespace Teaching.Certification.OA.Data
             {
                 if (_accessor is DbContextAccessor contextAccessor)
                     _contextAccessor = contextAccessor;
-
-                throw new NotSupportedException($"Unsupported accessor type '{_accessor.GetType()}'");
+                else
+                    throw new NotSupportedException($"Unsupported accessor type '{_accessor.GetType()}'");
             }
 
             return _contextAccessor;

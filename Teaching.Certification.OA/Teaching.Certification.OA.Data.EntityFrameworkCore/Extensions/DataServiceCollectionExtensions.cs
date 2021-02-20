@@ -24,6 +24,8 @@ namespace Teaching.Certification.OA.Data
         {
             services.NotNull(nameof(services));
 
+            services.AddSingleton<ISaveChangesAspect, LogSaveChangesAspect>();
+
             services.AddScoped(typeof(IStore<>), typeof(EntityStore<>));
 
             services.AddScoped<IAccessor>(sp => sp.GetRequiredService<DbContextAccessor>());

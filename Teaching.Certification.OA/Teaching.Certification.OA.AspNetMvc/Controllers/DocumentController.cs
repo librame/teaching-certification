@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Teaching.Certification.OA.AspNetMvc.Controllers
 {
     using Data;
 
-    [Authorize(Roles = DbContextPopulator.RoleAdministrator)]
+    [Authorize(Roles = DbContextPopulator.RoleNameAdministrator)]
     public class DocumentController : Controller
     {
         private readonly IStore<Document> _documentStore;
@@ -25,7 +23,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
         }
 
 
-        public IActionResult Index(int? size, int? page)
+        public IActionResult Index(int? page, int? size)
         {
             ViewBag.CategoryStore = _categoryStore;
             ViewBag.UserStore = _userStore;
@@ -34,7 +32,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
         }
 
 
-        public IActionResult Recycle(int? size, int? page)
+        public IActionResult Recycle(int? page, int? size)
         {
             ViewBag.CategoryStore = _categoryStore;
             ViewBag.UserStore = _userStore;
@@ -43,7 +41,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
         }
 
 
-        public IActionResult Search(int? size, int? page, string key = null)
+        public IActionResult Search(int? page, int? size, string key = null)
         {
             ViewBag.Key = key;
             ViewBag.CategoryStore = _categoryStore;

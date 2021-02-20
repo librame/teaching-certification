@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace Teaching.Certification.OA.Data
 {
     /// <summary>
-    /// 抽象可树形化静态扩展。
+    /// 可树形化静态扩展。
     /// </summary>
     public static class TreeableExtensions
     {

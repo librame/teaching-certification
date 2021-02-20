@@ -29,6 +29,11 @@ namespace Teaching.Certification.OA.Data
         /// </summary>
         IQueryable<T> Queryable { get; }
 
+        /// <summary>
+        /// 通过禁用跟踪执行可查询接口。
+        /// </summary>
+        IQueryable<T> QueryableByNoTracking { get; }
+
 
         /// <summary>
         /// 通过标识获取类型实例。

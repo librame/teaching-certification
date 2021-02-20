@@ -8,7 +8,7 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Department : AbstractIdentifier<int>, ILoggable
+    public class Department : AbstractIdentifier<int>, INaming, ILoggable
     {
         public virtual int BranchId { get; set; }
 

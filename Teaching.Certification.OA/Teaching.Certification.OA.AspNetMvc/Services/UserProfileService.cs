@@ -47,11 +47,11 @@ namespace Teaching.Certification.OA.AspNetMvc
             return identity?.FindFirst(ClaimTypes.Name)?.Value;
         }
 
-        public ClaimsIdentity PopulateIdentity(User user, Role role, Department department)
+        public ClaimsIdentity PopulateIdentity(User user, Role role, Department department, string authenticationType)
         {
             user.NotNull(nameof(user));
 
-            var identity = new ClaimsIdentity();
+            var identity = new ClaimsIdentity(authenticationType);
 
             identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id));
             identity.AddClaim(new Claim(ClaimTypes.Role, role?.Name ?? user.RoleId.ToString()));

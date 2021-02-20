@@ -25,7 +25,7 @@
                     <td>@m.CreatedTime</td>
                     <td>@m.UserIp</td>
                     <td>@m.Descr</td>
-                    <td>@(userStore.GetById(m.UserId)?.Name ?? m.UserId)</td>
+                    <td>@userStore.GetNameByIdIfNotEmpty(m.UserId)</td>
                     <td>@m.Status</td>
                 </tr>
                 }

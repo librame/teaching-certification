@@ -8,7 +8,7 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class UserState : AbstractIdentifier<int>, ILoggable
+    public class UserState : AbstractIdentifier<int>, INaming, ILoggable
     {
         public virtual string? Name { get; set; }
 

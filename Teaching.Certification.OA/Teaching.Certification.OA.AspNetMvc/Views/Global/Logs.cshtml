@@ -21,13 +21,13 @@
             <tbody>
                 @foreach (var m in Model)
                 {
-                    <tr>
-                        <td>@m.CreatedTime</td>
-                        <td>@m.Name</td>
-                        <td>@m.Descr</td>
-                        <td>@(userStore.GetById(m.UserId)?.Name ?? m.UserId)</td>
-                        <td>@m.AssocId</td>
-                    </tr>
+                <tr>
+                    <td>@m.CreatedTime</td>
+                    <td>@m.Name</td>
+                    <td>@m.Descr</td>
+                    <td>@userStore.GetNameByIdIfNotEmpty(m.UserId)</td>
+                    <td>@m.AssocId</td>
+                </tr>
                 }
             </tbody>
         </table>

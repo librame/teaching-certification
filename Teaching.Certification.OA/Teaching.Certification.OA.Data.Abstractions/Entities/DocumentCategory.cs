@@ -8,7 +8,7 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class DocumentCategory : AbstractIdentifier<int>, ILoggable
+    public class DocumentCategory : AbstractIdentifier<int>, INaming, ILoggable
     {
         public virtual string? Name { get; set; }
 

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Teaching.Certification.OA.Data
 {
     /// <summary>
-    /// 抽象树形节点静态扩展。
+    /// 树形节点静态扩展。
     /// </summary>
     public static class TreeingNodeExtensions
     {

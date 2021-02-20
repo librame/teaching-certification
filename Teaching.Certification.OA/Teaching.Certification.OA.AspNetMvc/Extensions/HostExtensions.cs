@@ -28,16 +28,16 @@ namespace Teaching.Certification.OA.AspNetMvc
                 var logger = services.GetRequiredService<ILogger<TAccessor>>();
                 var accessor = services.GetService<TAccessor>();
 
-                try
-                {
-                    initalAction?.Invoke(accessor, services);
+                //try
+                //{
+                initalAction?.Invoke(accessor, services);
 
-                    logger.LogInformation($"初始化数据库访问器”{typeof(TAccessor).Name}“成功");
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, $"初始化数据库访问器”{typeof(TAccessor).Name}“失败");
-                }
+                //    logger.LogInformation($"初始化数据库访问器”{typeof(TAccessor).Name}“成功");
+                //}
+                //catch (Exception ex)
+                //{
+                //    logger.LogError(ex, $"初始化数据库访问器”{typeof(TAccessor).Name}“失败");
+                //}
             }
 
             return host;

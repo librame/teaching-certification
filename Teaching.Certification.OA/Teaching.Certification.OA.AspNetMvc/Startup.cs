@@ -69,7 +69,7 @@ namespace Teaching.Certification.OA.AspNetMvc
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Schedule}/{action=My}/{id?}");
             });
 
             app.UseAuthentication();

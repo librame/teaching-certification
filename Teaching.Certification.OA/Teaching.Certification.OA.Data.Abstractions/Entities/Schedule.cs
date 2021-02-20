@@ -10,8 +10,10 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Schedule : AbstractIdentifier<int>, ILoggable
+    public class Schedule : AbstractIdentifier<int>, ITitling, ILoggable
     {
+        public virtual int DepartmentId { get; set; }
+
         public virtual string? CreatorId { get; set; }
 
         public virtual string? Title { get; set; }
@@ -36,7 +38,7 @@ namespace Teaching.Certification.OA.Data
                 UserId = userId,
                 AssocId = Id.ToString(),
                 Name = Title,
-                Descr = $"{nameof(CreatorId)}={CreatorId},{nameof(Address)}={Address},{nameof(Descr)}={Descr},{nameof(BeginTime)}={BeginTime},{nameof(EndTime)}={EndTime},{nameof(CreatedTime)}={CreatedTime},{nameof(Scope)}={Scope}"
+                Descr = $"{nameof(DepartmentId)}={DepartmentId},{nameof(CreatorId)}={CreatorId},{nameof(Address)}={Address},{nameof(Descr)}={Descr},{nameof(BeginTime)}={BeginTime},{nameof(EndTime)}={EndTime},{nameof(CreatedTime)}={CreatedTime},{nameof(Scope)}={Scope}"
             };
         }
 

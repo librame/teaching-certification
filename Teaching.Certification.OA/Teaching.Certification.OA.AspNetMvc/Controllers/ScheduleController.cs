@@ -1,30 +1,55 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Teaching.Certification.OA.AspNetMvc.Controllers
 {
     using Data;
 
-    [Authorize(Roles = DbContextPopulator.RoleAdministrator)]
+    [Authorize(Roles = DbContextPopulator.RoleNameAdministrator)]
     public class ScheduleController : Controller
     {
-        public IActionResult My()
+        private readonly IStore<Schedule> _scheduleStore;
+        private readonly IStore<Department> _departmentStore;
+        private readonly IStore<Note> _noteStore;
+        private readonly IUserProfileService _userProfile;
+
+
+        public ScheduleController(IStore<Schedule> scheduleStore,
+            IStore<Department> departmentStore,
+            IStore<Note> noteStore,
+            IUserProfileService userProfile)
         {
-            return View();
+            _scheduleStore = scheduleStore;
+            _departmentStore = departmentStore;
+            _noteStore = noteStore;
+            _userProfile = userProfile;
         }
 
-        public IActionResult Departments()
+
+        public IActionResult My(int? page, int? size)
         {
-            return View();
+            var currentUserId = _userProfile.GetCurrentUserId();
+
+            return View(_scheduleStore.GetPagingSchedules(beginTime: null,
+                departmentId: null, creatorId: currentUserId, page, size));
         }
 
-        public IActionResult Notes()
+
+        public IActionResult Departments(int? page, int? size)
         {
-            return View();
+            var currentUserDepartment = _departmentStore.GetByName(_userProfile.GetCurrentUserDepartment());
+
+            return View(_scheduleStore.GetPagingSchedules(beginTime: null,
+                departmentId: currentUserDepartment?.Id, creatorId: null, page, size));
+        }
+
+
+        public IActionResult Notes(int? page, int? size)
+        {
+            var currentUserId = _userProfile.GetCurrentUserId();
+
+            return View(_noteStore.GetPagingNotes(currentUserId, page, size));
         }
 
     }

@@ -8,11 +8,11 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Branch : AbstractIdentifier<int>, ILoggable
+    public class Branch : AbstractIdentifier<int>, INaming, ILoggable
     {
         public virtual string? Name { get; set; }
 
-        public virtual string? ShortName { get; set; }
+        public virtual string? AbbrName { get; set; }
 
 
         public virtual LogDescriptor ToLog(string? userId = null)
@@ -22,7 +22,7 @@ namespace Teaching.Certification.OA.Data
                 UserId = userId,
                 AssocId = Id.ToString(),
                 Name = Name,
-                Descr = $"{nameof(ShortName)}={ShortName}"
+                Descr = $"{nameof(AbbrName)}={AbbrName}"
             };
         }
 

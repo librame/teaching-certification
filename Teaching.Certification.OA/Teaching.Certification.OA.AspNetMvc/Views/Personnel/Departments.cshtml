@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IPageable<Department>
 @{
+    ViewData["Title"] = "部门管理";
+    var branchStore = ViewBag.BranchStore as IStore<Branch>;
+    var userStore = ViewBag.UserStore as IStore<User>;
 }
+<!-- Departments -->
+<div class="row">
+    <div class="col-sm-6">
+
+        <table class="table">
+            <caption>部门列表</caption>
+            <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>机构</th>
+                    <th>负责人</th>
+                    <th>电话</th>
+                    <th>手机</th>
+                    <th>传真</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                <tr>
+                    <td>@m.Name</td>
+                    <td>@branchStore.GetNameByIdIfNotDefault(m.BranchId)</td>
+                    <td>@userStore.GetNameByIdIfNotEmpty(m.PrincipalId)</td>
+                    <td>@m.Phone</td>
+                    <td>@m.Mobile</td>
+                    <td>@m.Fax</td>
+                    <td>修改</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

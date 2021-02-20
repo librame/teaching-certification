@@ -10,7 +10,7 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Attachment : AbstractIdentifier<int>, ILoggable
+    public class Attachment : AbstractIdentifier<int>, INaming, ILoggable
     {
         public virtual int DocumentId { get; set; }
 

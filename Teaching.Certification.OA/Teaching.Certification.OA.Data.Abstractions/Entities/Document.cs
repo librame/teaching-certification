@@ -10,7 +10,7 @@ using System;
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Document : AbstractParentIdentifier<int>, ILoggable
+    public class Document : AbstractParentIdentifier<int>, INaming, ILoggable
     {
         public virtual int CategoryId { get; set; }
 

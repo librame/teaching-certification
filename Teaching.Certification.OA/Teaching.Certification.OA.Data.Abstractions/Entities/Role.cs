@@ -8,7 +8,7 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class Role : AbstractIdentifier<int>, ILoggable
+    public class Role : AbstractIdentifier<string>, INaming, ILoggable
     {
         public virtual string? Name { get; set; }
 
@@ -20,7 +20,7 @@ namespace Teaching.Certification.OA.Data
             return new LogDescriptor
             {
                 UserId = userId,
-                AssocId = Id.ToString(),
+                AssocId = Id,
                 Name = Name,
                 Descr = $"{nameof(Descr)}={Descr}"
             };

@@ -24,7 +24,7 @@
                 {
                 <tr>
                     <td>@m.Id</td>
-                    <td>@menuStore.GetParent(m.ParentId, m => m.Name)</td>
+                    <td>@menuStore.GetNameByIdIfNotEmpty(m.ParentId)</td>
                     <td>@m.Name</td>
                     <td>@m.Url</td>
                     <td>排序</td>

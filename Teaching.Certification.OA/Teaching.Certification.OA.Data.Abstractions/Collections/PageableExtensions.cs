@@ -13,7 +13,7 @@ using System.Linq;
 namespace Teaching.Certification.OA.Data
 {
     /// <summary>
-    /// 抽象可分页静态扩展。
+    /// 可分页静态扩展。
     /// </summary>
     public static class PageableExtensions
     {

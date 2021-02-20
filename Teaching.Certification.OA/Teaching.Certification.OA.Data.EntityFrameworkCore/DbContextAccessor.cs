@@ -162,6 +162,7 @@ namespace Teaching.Certification.OA.Data
                     .ValueGeneratedNever();
 
                 b.Property(p => p.RoleId)
+                    .HasMaxLength(50)
                     .IsRequired();
 
                 b.Property(p => p.StateId)
@@ -180,6 +181,9 @@ namespace Teaching.Certification.OA.Data
                 b.Property(p => p.PasswordHash)
                     .HasMaxLength(200)
                     .IsRequired();
+
+                b.Property(p => p.Descr)
+                    .HasMaxLength(200);
 
                 // Relationship
                 //b.HasMany<UserLogin>()
@@ -239,7 +243,9 @@ namespace Teaching.Certification.OA.Data
                 b.HasKey(k => k.Id);
 
                 b.Property(p => p.Id)
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedNever()
+                    .HasMaxLength(50)
+                    .IsRequired();
 
                 b.Property(p => p.Name)
                     .HasMaxLength(50)
@@ -260,6 +266,7 @@ namespace Teaching.Certification.OA.Data
                     .ValueGeneratedOnAdd();
 
                 b.Property(p => p.RoleId)
+                    .HasMaxLength(50)
                     .IsRequired();
 
                 b.Property(p => p.MenuId)
@@ -306,7 +313,7 @@ namespace Teaching.Certification.OA.Data
                     .HasMaxLength(50)
                     .IsRequired();
 
-                b.Property(p => p.ShortName)
+                b.Property(p => p.AbbrName)
                     .HasMaxLength(50);
             });
 
@@ -434,6 +441,13 @@ namespace Teaching.Certification.OA.Data
                 b.Property(p => p.Id)
                     .ValueGeneratedOnAdd();
 
+                b.Property(p => p.DepartmentId)
+                    .IsRequired();
+
+                b.Property(p => p.CreatorId)
+                    .HasMaxLength(50);
+                    //.IsRequired();
+
                 b.Property(p => p.Scope)
                     .IsRequired();
 
@@ -444,10 +458,6 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.CreatedTime)
-                    .IsRequired();
-
-                b.Property(p => p.CreatorId)
-                    .HasMaxLength(50)
                     .IsRequired();
 
                 b.Property(p => p.Title)
@@ -475,8 +485,8 @@ namespace Teaching.Certification.OA.Data
                     .IsRequired();
 
                 b.Property(p => p.CreatorId)
-                    .HasMaxLength(50)
-                    .IsRequired();
+                    .HasMaxLength(50);
+                    //.IsRequired();
 
                 b.Property(p => p.Title)
                     .HasMaxLength(50)

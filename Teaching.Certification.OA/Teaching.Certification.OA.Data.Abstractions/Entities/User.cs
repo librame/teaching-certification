@@ -8,9 +8,9 @@
 
 namespace Teaching.Certification.OA.Data
 {
-    public class User : AbstractIdentifier<string>, ILoggable
+    public class User : AbstractIdentifier<string>, INaming, ILoggable
     {
-        public virtual int RoleId { get; set; }
+        public virtual string? RoleId { get; set; }
 
         public virtual int StateId { get; set; }
             = 1;
@@ -23,6 +23,8 @@ namespace Teaching.Certification.OA.Data
         public virtual string? Name { get; set; }
 
         public virtual string? PasswordHash { get; set; }
+
+        public virtual string? Descr { get; set; }
 
 
         public virtual LogDescriptor ToLog(string? userId = null)

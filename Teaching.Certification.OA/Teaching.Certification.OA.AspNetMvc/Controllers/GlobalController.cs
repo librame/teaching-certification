@@ -5,7 +5,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
 {
     using Data;
 
-    [Authorize(Roles = DbContextPopulator.RoleAdministrator)]
+    [Authorize(Roles = DbContextPopulator.RoleNameAdministrator)]
     public class GlobalController : Controller
     {
         private readonly IStore<Menu> _menuStore;
@@ -29,7 +29,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
         }
 
 
-        public IActionResult Menus(int? size, int? page)
+        public IActionResult Menus(int? page, int? size)
         {
             ViewBag.MenuStore = _menuStore;
 
@@ -37,13 +37,13 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
         }
 
 
-        public IActionResult Roles(int? size, int? page)
+        public IActionResult Roles(int? page, int? size)
         {
-            return View(_roleStore.GetPagingById(page, size));
+            return View(_roleStore.GetPagingById<Role, string>(page, size));
         }
 
 
-        public IActionResult UserLogins(int? size, int? page)
+        public IActionResult UserLogins(int? page, int? size)
         {
             ViewBag.UserStore = _userStore;
 
@@ -51,7 +51,7 @@ namespace Teaching.Certification.OA.AspNetMvc.Controllers
         }
 
 
-        public IActionResult Logs(int? size, int? page)
+        public IActionResult Logs(int? page, int? size)
         {
             ViewBag.UserStore = _userStore;
 

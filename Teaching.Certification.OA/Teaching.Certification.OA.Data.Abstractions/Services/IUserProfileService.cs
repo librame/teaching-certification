@@ -51,7 +51,8 @@ namespace Teaching.Certification.OA.Data
         /// <param name="user">给定的 <see cref="User"/>。</param>
         /// <param name="role">给定的 <see cref="Role"/>。</param>
         /// <param name="department">给定的 <see cref="Department"/>。</param>
+        /// <param name="authenticationType">给定的认证类型。</param>
         /// <returns>返回 <see cref="ClaimsIdentity"/>。</returns>
-        ClaimsIdentity PopulateIdentity(User user, Role role, Department department);
+        ClaimsIdentity PopulateIdentity(User user, Role role, Department department, string? authenticationType);
     }
 }

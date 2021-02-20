@@ -10,7 +10,7 @@ namespace Teaching.Certification.OA.Data
 {
     public class RoleMenu : AbstractIdentifier<int>, ILoggable
     {
-        public virtual int RoleId { get; set; }
+        public virtual string? RoleId { get; set; }
 
         public virtual string? MenuId { get; set; }
 

@@ -20,22 +20,40 @@ namespace Teaching.Certification.OA.Data
     public static class DbContextPopulator
     {
         /// <summary>
-        /// 管理员角色。
+        /// 用户管理员角色。
         /// </summary>
-        public const string RoleAdministrator = "Administrator";
+        public const string UserAdministrator = "管理用户";
 
         /// <summary>
-        /// 注册员角色。
+        /// 用户注册员角色。
         /// </summary>
-        public const string RoleRegister = "Register";
+        public const string UserRegister = "注册用户";
+
+        /// <summary>
+        /// 管理员角色名称。
+        /// </summary>
+        public const string RoleNameAdministrator = "Administrator";
+
+        /// <summary>
+        /// 注册员角色名称。
+        /// </summary>
+        public const string RoleNameRegister = "Register";
+
+        /// <summary>
+        /// 默认密码。
+        /// </summary>
+        public const string DefaultPassword = "123456";
+
+        private static Role? _roleAdministrator;
+        private static Role? _roleRegister;
 
 
         /// <summary>
-        /// 开始填充。
+        /// 异步填充。
         /// </summary>
         /// <param name="cancellationToken">给定的 <see cref="CancellationToken"/>（可选）。</param>
         /// <returns>返回 <see cref="Task"/>。</returns>
-        public static async Task OnPopulateAsync(DbContextAccessor accessor, IServiceProvider services,
+        public static async Task PopulateAsync(DbContextAccessor accessor, IServiceProvider services,
             CancellationToken cancellationToken = default)
         {
             accessor.NotNull(nameof(accessor));
@@ -75,6 +93,17 @@ namespace Teaching.Certification.OA.Data
             {
                 PopulateUsers(accessor);
             }
+
+            // 填充日程
+#pragma warning disable CS8604 // 可能的 null 引用参数。
+            if (!accessor.Schedules.IsPopulated())
+#pragma warning restore CS8604 // 可能的 null 引用参数。
+            {
+                PopulateSchedules(accessor);
+            }
+
+            // 同步数据库
+            await accessor.SaveChangesAsync(cancellationToken);
         }
 
 
@@ -177,7 +206,7 @@ namespace Teaching.Certification.OA.Data
             });
             accessor.Menus.Add(new Menu
             {
-                Id = "102001",
+                Id = "102002",
                 ParentId = "102",
                 Name = "部门日程",
                 Url = "/Schedule/Departments",
@@ -185,7 +214,7 @@ namespace Teaching.Certification.OA.Data
             });
             accessor.Menus.Add(new Menu
             {
-                Id = "102001",
+                Id = "102003",
                 ParentId = "102",
                 Name = "我的便签",
                 Url = "/Schedule/Notes",
@@ -211,7 +240,7 @@ namespace Teaching.Certification.OA.Data
             });
             accessor.Menus.Add(new Menu
             {
-                Id = "101001",
+                Id = "101002",
                 ParentId = "101",
                 Name = "部门管理",
                 Url = "/Personnel/Departments",
@@ -219,7 +248,7 @@ namespace Teaching.Certification.OA.Data
             });
             accessor.Menus.Add(new Menu
             {
-                Id = "101001",
+                Id = "101003",
                 ParentId = "101",
                 Name = "员工管理",
                 Url = "/Personnel/Users",
@@ -233,18 +262,23 @@ namespace Teaching.Certification.OA.Data
 #pragma warning disable CS8602 // 解引用可能出现空引用。
             accessor.Roles.Add(new Role
             {
-                Name = RoleAdministrator,
+                Id = StoreHelper.GenerateRoleId(),
+                Name = RoleNameAdministrator,
                 Descr = "管理员"
             });
 #pragma warning restore CS8602 // 解引用可能出现空引用。
 
             accessor.Roles.Add(new Role
             {
-                Name = RoleRegister,
+                Id = StoreHelper.GenerateRoleId(),
+                Name = RoleNameRegister,
                 Descr = "注册员"
             });
 
-            // Right
+            _roleAdministrator = accessor.Roles.ReadyQuery().First(p => p.Name == RoleNameAdministrator);
+            _roleRegister = accessor.Roles.ReadyQuery().First(p => p.Name == RoleNameRegister);
+
+            // RoleMenu
 #pragma warning disable CS8604 // 可能的 null 引用参数。
             var adminMenuIds = accessor.Menus.ReadyQuery().Select(s => s.Id).ToList();
 #pragma warning restore CS8604 // 可能的 null 引用参数。
@@ -256,22 +290,22 @@ namespace Teaching.Certification.OA.Data
             {
 #pragma warning disable CS8602 // 解引用可能出现空引用。
                 accessor.RoleMenus.Add(new RoleMenu
+#pragma warning restore CS8602 // 解引用可能出现空引用。
                 {
-                    RoleId = 1, // Administrator
+                    RoleId = _roleAdministrator?.Id,
                     MenuId = id
                 });
-#pragma warning restore CS8602 // 解引用可能出现空引用。
             });
 
             registMenuIds.ForEach(id =>
             {
 #pragma warning disable CS8602 // 解引用可能出现空引用。
                 accessor.RoleMenus.Add(new RoleMenu
+#pragma warning restore CS8602 // 解引用可能出现空引用。
                 {
-                    RoleId = 2, // Register
+                    RoleId = _roleRegister?.Id,
                     MenuId = id
                 });
-#pragma warning restore CS8602 // 解引用可能出现空引用。
             });
         }
 
@@ -285,7 +319,7 @@ namespace Teaching.Certification.OA.Data
                 accessor.Branches.Add(new Branch
                 {
                     Name = "测试机构",
-                    ShortName = "机构简称"
+                    AbbrName = "机构简称"
                 });
             }
 
@@ -315,22 +349,83 @@ namespace Teaching.Certification.OA.Data
                 });
             }
 
-            var defaultPasswordHash = accessor.GetService<IPasswordHashService>().ComputeHash("123456");
+            var defaultPasswordHash = accessor.GetService<IPasswordHashService>().ComputeHash(DefaultPassword);
 
 #pragma warning disable CS8602 // 解引用可能出现空引用。
             accessor.Users.Add(new User
             {
-                RoleId = 1,
-                Name = "默认管理用户",
+                Id = StoreHelper.GenerateUserId(),
+                RoleId = _roleAdministrator?.Id,
+                Name = UserAdministrator,
                 PasswordHash = defaultPasswordHash
             });
 #pragma warning restore CS8602 // 解引用可能出现空引用。
             accessor.Users.Add(new User
             {
-                RoleId = 2,
+                Id = StoreHelper.GenerateUserId(),
+                RoleId = _roleRegister?.Id,
                 DepartmentId = 1,
-                Name = "默认注册用户",
+                Name = UserRegister,
                 PasswordHash = defaultPasswordHash
+            });
+        }
+
+        private static void PopulateSchedules(DbContextAccessor accessor)
+        {
+            var now = DateTime.Now;
+
+            // Note
+#pragma warning disable CS8604 // 可能的 null 引用参数。
+            if (!accessor.Notes.IsPopulated())
+#pragma warning restore CS8604 // 可能的 null 引用参数。
+            {
+#pragma warning disable CS8604 // 可能的 null 引用参数。
+                foreach (var user in accessor.Users.ReadyForEach())
+#pragma warning restore CS8604 // 可能的 null 引用参数。
+                {
+                    accessor.Notes.Add(new Note
+                    {
+                        CreatorId = user?.Id,
+                        Title = $"测试{user?.Id}个人便笺",
+                        Descr = "便笺描述",
+                        CreatedTime = now
+                    });
+                }
+            }
+
+#pragma warning disable CS8604 // 可能的 null 引用参数。
+            foreach (var user in accessor.Users.ReadyForEach())
+#pragma warning restore CS8604 // 可能的 null 引用参数。
+            {
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+                accessor.Schedules.Add(new Schedule
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+                {
+                    DepartmentId = 0,
+                    CreatorId = user?.Id,
+                    Title = $"测试{user?.Id}个人日程",
+                    Address = "日程地址",
+                    Descr = "日程描述",
+                    BeginTime = now.AddDays(10),
+                    EndTime = now.AddDays(30),
+                    CreatedTime = now,
+                    Scope = ScheduleScope.Public
+                });
+            }
+
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+            accessor.Schedules.Add(new Schedule
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+            {
+                DepartmentId = 1,
+                CreatorId = accessor.Users.ReadyQuery().First()?.Id,
+                Title = $"测试部门日程",
+                Address = "日程地址",
+                Descr = "日程描述",
+                BeginTime = now.AddDays(10),
+                EndTime = now.AddDays(30),
+                CreatedTime = now,
+                Scope = ScheduleScope.Public
             });
         }
 

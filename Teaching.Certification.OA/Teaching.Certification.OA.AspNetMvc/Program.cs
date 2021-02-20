@@ -13,7 +13,7 @@ namespace Teaching.Certification.OA.AspNetMvc
                 .Build()
                 .InitializeAccessor<DbContextAccessor>((accessor, services) =>
                 {
-                    DbContextPopulator.OnPopulateAsync(accessor, services).Wait();
+                    DbContextPopulator.PopulateAsync(accessor, services).Wait();
                 })
                 .Run();
         }
